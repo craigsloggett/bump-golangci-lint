@@ -1,6 +1,6 @@
-name: My Composite Action
+name: Bump golangci-lint
 
-description: A composite action that ...
+description: A composite action to bump the golangci-lint version.
 
 inputs:
   my-input:

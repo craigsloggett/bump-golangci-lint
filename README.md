@@ -1,29 +1,31 @@
-# composite-action-template
+# bump-golangci-lint
 
-A GitHub repository template for creating a new Composite Action.
-
-> Composite actions allow you to collect a series of workflow job steps into a single action which you can then run as a single job step in multiple workflows.
+A composite action to bump the golangci-lint version.
 
 ## Usage
 
 ```yaml
-name: Lint
+name: Bump
 
-on: pull_request
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
-  my-job:
-    name: My Job
+  bump:
+    name: golangci-lint
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Use Composite Action
-        uses: craigsloggett-lab/my-composite-action@v1
+      - name: Bump golangci-lint
+        uses: craigsloggett/bump-golangci-lint@v1
 ```
 
 ### Inputs
