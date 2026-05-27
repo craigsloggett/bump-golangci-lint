@@ -7,32 +7,36 @@ inputs:
     description: Path to the file to update.
     required: true
   path:
-    description: yq expression targeting the value to update in the file (e.g. .inputs.golangci-lint-version.default). Mutually exclusive with match and replace.
+    description: >
+      yq expression locating the line to update (e.g. .inputs.golangci-lint-version.default).
+      Mutually exclusive with replace.
     required: false
     default: ''
   match:
-    description: Regex pattern matching the line to update in the file. Use with replace.
+    description: Regex matching the line to rewrite. Pair with replace.
     required: false
     default: ''
   replace:
-    description: Replacement line. Use {version} as the placeholder for the new version.
+    description: >
+      Replacement line. Use {version} as the placeholder for the new version.
+      Pair with match.
     required: false
     default: ''
 
 outputs:
   version:
     description: The latest golangci-lint version.
-    value: ${{ steps.bump.outputs.version }}
+    value: ${{ steps.bump-golangci-lint.outputs.version }}
   changed:
     description: Whether the file was modified by this run (true|false).
-    value: ${{ steps.bump.outputs.changed }}
+    value: ${{ steps.bump-golangci-lint.outputs.changed }}
 
 runs:
   using: composite
   steps:
     - name: Bump golangci-lint
-      id: bump
-      run: ${{ github.action_path }}/src/bump.sh
+      id: bump-golangci-lint
+      run: ${{ github.action_path }}/src/bump_golangci_lint.sh
       shell: sh
       env:
         FILE: ${{ inputs.file }}
